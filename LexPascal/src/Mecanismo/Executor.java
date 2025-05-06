@@ -158,11 +158,6 @@ public class Executor {
     }
 
     public void AnalisarMontandoTabelaSimbolos(){
-        //AQUI É QUE ENTRA O TRABALHO DE VCS.
-        //1 - Precisa da Tabela de Simbolos do programa.
-        //2 - Precisa da Tabela de Simbolos da linguagem.
-        //3 - Precisa varrer o buffer secundário, para localizar os tokens, definindo o que é cada um dos lexemas.
-
         Token token;
         int endereco = 0;
     
@@ -191,8 +186,6 @@ public class Executor {
     }
 
     public void ImprimirTabelaSimbolosPrograma(){
-        //A parte final, na qual vc imprime todas as entradas da Tabela de Simbolos do programa, após o processamento.
-
         System.out.println("----- Tabela de Símbolos do Programa -----");
         
         for (Map.Entry<String, Token> entrada : this.tabelaSimbolosPrograma.entrySet()) {
