@@ -158,31 +158,46 @@ public class Executor {
     }
 
     public void AnalisarMontandoTabelaSimbolos(){
-        Token token;
+        if (bufferSecundario == null || bufferSecundario.isEmpty()) {
+            System.out.println("Erro: Buffer secundário está vazio. Execute as etapas anteriores primeiro.");
+            return;
+        }
+    
+        if (tabelaSimbolosPrograma == null) {
+            this.tabelaSimbolosPrograma = new HashMap<>();
+        }
+    
+        TabelaSimbolosLinguagem tabelaLinguagem = new TabelaSimbolosLinguagem();
         int endereco = 0;
     
-        for (String linha : this.bufferSecundario) {
-            String[] lexemas = linha.split("\\s+");
+        for (String lexema : this.bufferSecundario) {
+            Token token;
     
-            for (String lexema : lexemas) {
-                if (this.tabelaLinguagem.getTabela().containsKey(lexema.toUpperCase())) {
-                    token = this.tabelaLinguagem.getTabela().get(lexema.toUpperCase());
-                } else {
-                    token = new Token();
-                    token.setToken("ID");
-                    token.setLexema(lexema);
-                    token.setTipo("identificador");
-                    token.setDescricao("Identificador definido pelo usuário");
-                    token.setEndereco(endereco);
-                }
+            // Verifica se o lexema está na linguagem (palavra-chave ou símbolo conhecido)
+            if (tabelaLinguagem.getTabela().containsKey(lexema)) {
+                token = tabelaLinguagem.getTabela().get(lexema);
+            }
+            // Classificações manuais com os métodos
+            else if (IsNumber(lexema)) {
+                token = new Token("NUM", lexema, "Número", lexema, endereco++);
+            }
+            else if (IsLiteral(lexema)) {
+                token = new Token("LIT", lexema, "Literal", lexema, endereco++);
+            }
+            else if (IsCharacter(lexema)) {
+                token = new Token("SYM", lexema, "Símbolo", lexema, endereco++);
+            }
+            else if (IsIdentifier(lexema)) {
+                token = new Token("ID", lexema, "Identificador", "Identificador definido pelo usuário", endereco++);
+            }
+            else {
+                token = new Token("UNDEF", lexema, "Desconhecido", "Token não reconhecido", endereco++);
+            }
     
-                if (!this.tabelaSimbolosPrograma.containsKey(lexema)) {
-                    this.tabelaSimbolosPrograma.put(lexema, token);
-                    endereco++;
-                }
+            if (!this.tabelaSimbolosPrograma.containsKey(lexema)) {
+                this.tabelaSimbolosPrograma.put(lexema, token);
             }
         }
-        
     }
 
     public void ImprimirTabelaSimbolosPrograma(){
