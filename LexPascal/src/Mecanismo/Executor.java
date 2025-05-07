@@ -173,11 +173,9 @@ public class Executor {
         for (String lexema : this.bufferSecundario) {
             Token token;
     
-            // Verifica se o lexema está na linguagem (palavra-chave ou símbolo conhecido)
             if (tabelaLinguagem.getTabela().containsKey(lexema)) {
                 token = tabelaLinguagem.getTabela().get(lexema);
             }
-            // Classificações manuais com os métodos
             else if (IsNumber(lexema)) {
                 token = new Token("NUM", lexema, "Número", lexema, endereco++);
             }
